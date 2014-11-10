@@ -13,11 +13,11 @@ class Environment
 
 	def culture_cells
 		@height.times { |row| @width.times { |col| 
-			@cells[row][col] = Cell.new(@habitability > rand) } }
+			@cells[row][col] = Cell.new(row, col, @habitability > rand) } }
 	end
 
 	def culture_cell(row, col, living=true)
-		@cells[row][col] = Cell.new(living)
+		@cells[row][col] = Cell.new(row, col, living)
 	end
 
 	def to_s

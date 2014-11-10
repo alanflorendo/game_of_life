@@ -74,7 +74,7 @@ describe 'Environment' do
 			expect(new_environment.cells[0][0].living).to eq(true)
 			expect(new_environment.cells[4][4].dead).to eq(true)
 		end
-
 	end
+
 end
 
