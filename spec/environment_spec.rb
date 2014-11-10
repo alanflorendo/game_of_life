@@ -69,7 +69,7 @@ describe 'Environment' do
 
 	context "when cells are cultured in a specific location" do
 		it "creates live cells in the specific location" do
-			new_environment.culture_cell(0,0,true)
+			new_environment.culture_cell(0,0)
 			new_environment.culture_cell(4,4,false)
 			expect(new_environment.cells[0][0].living).to eq(true)
 			expect(new_environment.cells[4][4].dead).to eq(true)

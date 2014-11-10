@@ -16,7 +16,7 @@ class Environment
 			@cells[row][col] = Cell.new(@habitability > rand) } }
 	end
 
-	def culture_cell(row, col, living)
+	def culture_cell(row, col, living=true)
 		@cells[row][col] = Cell.new(living)
 	end
 
