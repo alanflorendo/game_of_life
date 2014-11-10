@@ -74,7 +74,30 @@ describe 'Environment' do
 			expect(new_environment.cells[0][0].living).to eq(true)
 			expect(new_environment.cells[4][4].dead).to eq(true)
 		end
-
 	end
+
+	context "when cells are cultured in a 4x4 environment" do
+		# XX__
+		# XX__
+		# ____
+		# ____
+		it "num_living_neighbors property works" do
+			e = Environment.new(4,4,0)
+			e.culture_cells
+			e.culture_cell(0,0)
+			e.culture_cell(0,1)
+			e.culture_cell(1,0)
+			e.culture_cell(1,1)
+			expect(e.num_living_neighbors(0,0)).to eq(3)
+			expect(e.num_living_neighbors(0,1)).to eq(3)
+			expect(e.num_living_neighbors(1,0)).to eq(3)
+			expect(e.num_living_neighbors(1,1)).to eq(3)
+			expect(e.num_living_neighbors(0,2)).to eq(2)
+			expect(e.num_living_neighbors(1,2)).to eq(2)
+			expect(e.num_living_neighbors(2,2)).to eq(1)
+			expect(e.num_living_neighbors(3,3)).to eq(0)
+		end
+	end
+
 end
 

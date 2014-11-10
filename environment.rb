@@ -13,11 +13,29 @@ class Environment
 
 	def culture_cells
 		@height.times { |row| @width.times { |col| 
-			@cells[row][col] = Cell.new(@habitability > rand) } }
+			@cells[row][col] = Cell.new(row, col, @habitability > rand) } }
 	end
 
 	def culture_cell(row, col, living=true)
-		@cells[row][col] = Cell.new(living)
+		@cells[row][col] = Cell.new(row, col, living)
+	end
+
+	def coord_is_valid(coord)
+		return false if coord[0]<0 || coord[0]>=@height
+		return false if coord[1]<0 || coord[1]>=@width
+		return true
+	end
+
+	def num_living_neighbors(cell_row, cell_col)
+		num_living = 0
+		cell = @cells[cell_row][cell_col]
+		cell.neighbors_coords.each do |coord|
+			if coord_is_valid(coord)
+				neighbor_cell = @cells[coord[0]][coord[1]]
+				num_living += 1 if neighbor_cell.living
+			end
+		end
+		return num_living
 	end
 
 	def to_s
@@ -29,14 +47,4 @@ class Environment
 		end
 	end
 
-end
-
-soso_place = Environment.new(5, 10, 0.5)
-soso_place.culture_cells
-num_living_cells = 0
-soso_place.height.times do |row|
-	soso_place.width.times do |col|
-		puts soso_place.cells[row][col]
-		# num_living_cells += 1 if soso_place.cells[row][col].living
-	end
 end
