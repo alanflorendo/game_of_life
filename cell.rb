@@ -17,4 +17,8 @@ class Cell
 		@living = true
 	end
 
+	def to_s
+		@living ? "X" : "_"
+	end
+
 end
