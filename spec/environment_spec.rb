@@ -2,7 +2,10 @@ require 'spec_helper'
 require_relative '../environment.rb'
 
 describe 'Environment' do
-	let!(:new_environment) { Environment.new(5,10) }
+	let!(:new_environment) { Environment.new(5,10, 1) }
+	let!(:happy_place) { Environment.new(5,10, 1) }
+	let!(:place_of_death) { Environment.new(5,10, 0) }
+	let!(:soso_place) { Environment.new(5,10, 0.5) }
 
 	context "when initialized as 5x10" do 
 
@@ -26,12 +29,42 @@ describe 'Environment' do
 
 	end
 
-	context "after the full environment has been cultured" do
-		before(:each) { new_environment.culture_cells }
+	context "in terms of culture" do
 
-		it "contains 50 cells" do
-			50.times { |index| expect(new_environment.cells.flatten[index]).to be_a(Cell)}
+		context "after the full environment has been cultured" do
+
+			it "contains 50 cells" do
+				new_environment.culture_cells
+				50.times { |index| expect(new_environment.cells.flatten[index]).to be_a(Cell)}
+			end
+		end
+
+		context "when entirely hospitable" do
+			it "all of the cells cultured will initially be living" do
+				happy_place.culture_cells
+				50.times { |index| expect(happy_place.cells.flatten[index].living).to eq(true)}
+			end
+		end
+
+		context "when entirely inhospitable" do
+			it "all of the cells cultured will initially be dead" do
+				place_of_death.culture_cells
+				50.times { |index| expect(place_of_death.cells.flatten[index].dead).to eq(true)}
+			end
+		end
+
+		context "when 50% inhospitable" do
+			it "approximately half of the cells cultured will initially be living" do
+				soso_place.culture_cells
+				num_living_cells = 0
+				soso_place.height.times do |row|
+					soso_place.width.times do |col|
+						num_living_cells += 1 if soso_place.cells[row][col].living
+					end
+				end
+				expect(15..35).to include(num_living_cells)
+			end
 		end
 	end
-
 end
+
