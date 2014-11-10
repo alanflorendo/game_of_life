@@ -11,12 +11,7 @@ class Environment
 	end
 
 	def culture_cells
-		@height.times do |row|
-			@cells.push([])
-			@width.times do |cell|
-				@cells[row].push(Cell.new(true))
-			end			
-		end
+		@height.times { |row| @width.times { |col| @cells[row][col] = Cell.new(true) } }
 	end
 
 	def to_s

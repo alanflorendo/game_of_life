@@ -24,7 +24,14 @@ describe 'Environment' do
 				expect(cell).to eq(nil) }
 		end
 
+	end
 
+	context "after the full environment has been cultured" do
+		before(:each) { new_environment.culture_cells }
+
+		it "contains 50 cells" do
+			50.times { |index| expect(new_environment.cells.flatten[index]).to be_a(Cell)}
+		end
 	end
 
 end
