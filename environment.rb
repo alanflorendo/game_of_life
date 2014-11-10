@@ -16,6 +16,10 @@ class Environment
 			@cells[row][col] = Cell.new(@habitability > rand) } }
 	end
 
+	def culture_cell(row, col, living)
+		@cells[row][col] = Cell.new(living)
+	end
+
 	def to_s
 		@height.times do |row|
 			@width.times do |col|
