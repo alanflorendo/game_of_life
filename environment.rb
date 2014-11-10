@@ -31,12 +31,3 @@ class Environment
 
 end
 
-soso_place = Environment.new(5, 10, 0.5)
-soso_place.culture_cells
-num_living_cells = 0
-soso_place.height.times do |row|
-	soso_place.width.times do |col|
-		puts soso_place.cells[row][col]
-		# num_living_cells += 1 if soso_place.cells[row][col].living
-	end
-end
