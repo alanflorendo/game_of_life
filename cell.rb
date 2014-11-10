@@ -40,5 +40,3 @@ class Cell
 
 end
 
-c = Cell.new(0,0,true)
-puts c.neighbors_coords.inspect
