@@ -42,26 +42,20 @@ class Environment
 	end
 
 	def set_num_living_neighbors_for_all_cells
-		@height.times { |r| @width.times { |c| @cells[r][c].num_living_neighbors = num_living_neighbors(r,c) } }
+		@height.times { |r| @width.times { |c| 
+			@cells[r][c].num_living_neighbors = num_living_neighbors(r,c) } }
 	end
 
 	def tick
-	# Implementation of the 4 GoL Rules
 		set_num_living_neighbors_for_all_cells
-		@height.times do |r|
-			@width.times do |c|
-				cell = @cells[r][c]
-				@life_at_t_plus_one[r][c] = cell.tick
-				# if cell.dead && cell.num_living_neighbors == 3
-				# 	@life_at_t_plus_one[r][c] = true
-				# elsif cell.living && (cell.num_living_neighbors==2 || cell.num_living_neighbors==3)
-				# 	@life_at_t_plus_one[r][c] = true
-				# else
-				# 	@life_at_t_plus_one[r][c] = false
-				# end
-			end
-		end
-		@height.times { |r| @width.times { |c| @cells[r][c].living = @life_at_t_plus_one[r][c] } }
+
+		# store results of rules in separate array
+		@height.times { |r| @width.times { |c| 
+			@life_at_t_plus_one[r][c] = @cells[r][c].tick  } }
+
+		# apply results of that array to existing environment
+		@height.times { |r| @width.times { |c| 
+			@cells[r][c].living = @life_at_t_plus_one[r][c] } }
 	end
 
 	def tick_indefinitely(pause_time)

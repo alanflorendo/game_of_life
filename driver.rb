@@ -35,6 +35,5 @@ e.tick_indefinitely(0.5)
 # e.culture_cell(2,4)
 # e.culture_cell(3,2)
 # e.culture_cell(3,3)
-# e.set_num_living_neighbors_for_all_cells
 # e.tick_indefinitely(5)
 
