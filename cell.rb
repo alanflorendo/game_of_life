@@ -1,5 +1,4 @@
 class Cell
-	# attr_reader :living
 	attr_accessor :living, :num_living_neighbors
 
 	def initialize(row, col, living)
@@ -11,14 +10,6 @@ class Cell
 
 	def dead
 		return !living
-	end
-
-	def dies
-		@living = false
-	end
-
-	def regenerates
-		@living = true
 	end
 
 	def tick
@@ -47,4 +38,3 @@ class Cell
 	end
 
 end
-
