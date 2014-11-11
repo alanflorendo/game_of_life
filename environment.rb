@@ -2,6 +2,7 @@ require_relative 'cell.rb'
 
 class Environment
 	attr_reader :height, :width, :cells
+	attr_accessor :life_at_t_plus_one
 
 	def initialize(height, width, habitability)
 		@height = height
@@ -9,6 +10,8 @@ class Environment
 		@habitability = habitability
 		@cells = []
 		@height.times { @cells.push(Array.new(width))}
+		@life_at_t_plus_one = []
+		@height.times { @life_at_t_plus_one.push(Array.new(width))}
 	end
 
 	def culture_cells
@@ -44,28 +47,29 @@ class Environment
 
 	def tick
 	# Implementation of the 4 GoL Rules
+		set_num_living_neighbors_for_all_cells
 		@height.times do |r|
 			@width.times do |c|
-				n = num_living_neighbors(r,c)
 				cell = @cells[r][c]
-				if cell.dead && cell.num_living_neighbors == 3
-					cell.regenerates
-				elsif cell.living && cell.num_living_neighbors < 2
-					cell.dies
-				elsif cell.living && cell.num_living_neighbors > 3
-					cell.dies
-				# else cell lives if 2 or 3 living neighbors
-				end
+				@life_at_t_plus_one[r][c] = cell.tick
+				# if cell.dead && cell.num_living_neighbors == 3
+				# 	@life_at_t_plus_one[r][c] = true
+				# elsif cell.living && (cell.num_living_neighbors==2 || cell.num_living_neighbors==3)
+				# 	@life_at_t_plus_one[r][c] = true
+				# else
+				# 	@life_at_t_plus_one[r][c] = false
+				# end
 			end
 		end
+		@height.times { |r| @width.times { |c| @cells[r][c].living = @life_at_t_plus_one[r][c] } }
 	end
 
 	def tick_indefinitely(pause_time)
-			set_num_living_neighbors_for_all_cells
-			sleep(pause_time)
-			tick
 			puts "\e[H\e[2J" # clear terminal window
 			puts self
+			sleep(pause_time)
+			set_num_living_neighbors_for_all_cells
+			tick
 			tick_indefinitely(pause_time)
 	end
 

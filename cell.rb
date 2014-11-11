@@ -1,6 +1,6 @@
 class Cell
-	attr_reader :living
-	attr_accessor :num_living_neighbors
+	# attr_reader :living
+	attr_accessor :living, :num_living_neighbors
 
 	def initialize(row, col, living)
 		@row = row
@@ -19,6 +19,12 @@ class Cell
 
 	def regenerates
 		@living = true
+	end
+
+	def tick
+		return true if living && (num_living_neighbors==2 || num_living_neighbors==3)
+		return true if dead && num_living_neighbors==3
+		return false
 	end
 
 	def to_s
