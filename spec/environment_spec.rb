@@ -119,5 +119,99 @@ describe 'Environment' do
 		end
 	end
 
+	context "Implementation of Rules" do
+		let!(:new_environment) { Environment.new(5, 5, 0) }
+
+		context "Rule 1: when living cells have only 0 or 1 neighbor" do
+
+			it "the cells die after a tick" do
+				new_environment.culture_cells
+				new_environment.culture_cell(0,0)
+				new_environment.culture_cell(4,3)
+				new_environment.culture_cell(4,4)
+				new_environment.set_num_living_neighbors_for_all_cells
+				new_environment.tick
+				expect(new_environment.cells[0][0].dead).to eq(true)
+				expect(new_environment.cells[4][3].dead).to eq(true)
+				expect(new_environment.cells[4][4].dead).to eq(true)
+			end
+
+		end
+
+		context "Rule 2: when living cells have 2 or 3 neighbors" do
+
+			it "the cells with 2 neighbors continue to live after a tick" do
+				# D_D
+				# _L_
+				new_environment.culture_cells
+				new_environment.culture_cell(0,0)
+				new_environment.culture_cell(1,1)
+				new_environment.culture_cell(0,2)
+				new_environment.set_num_living_neighbors_for_all_cells
+				new_environment.tick
+				expect(new_environment.cells[0][0].dead).to eq(true) # one neighbor
+				expect(new_environment.cells[1][1].living).to eq(true) # two neighbors
+				expect(new_environment.cells[0][2].dead).to eq(true) # one neighbor
+			end
+
+			it "the cells with 3 neighbors continue to live after a tick" do
+				# D_D
+				# _L_
+				# _D_
+				new_environment.culture_cells
+				new_environment.culture_cell(0,0)
+				new_environment.culture_cell(0,2)
+				new_environment.culture_cell(1,1)
+				new_environment.culture_cell(2,1)
+				new_environment.set_num_living_neighbors_for_all_cells
+				new_environment.tick
+				expect(new_environment.cells[0][0].dead).to eq(true) # one neighbor
+				expect(new_environment.cells[0][2].dead).to eq(true) # one neighbor
+				expect(new_environment.cells[1][1].living).to eq(true) # three neighbors
+				expect(new_environment.cells[2][1].dead).to eq(true) # one neighbor
+			end
+		end
+
+		context "Rule 3: when living cells have more than three live neighbors" do
+			it "the cells die after one tick" do
+				# LDL
+				# LDL
+				new_environment.culture_cells
+				new_environment.culture_cell(0,0)
+				new_environment.culture_cell(0,1)
+				new_environment.culture_cell(0,2)
+				new_environment.culture_cell(1,0)
+				new_environment.culture_cell(1,1)
+				new_environment.culture_cell(1,2)
+				new_environment.set_num_living_neighbors_for_all_cells
+				new_environment.tick
+				expect(new_environment.cells[0][0].living).to eq(true) # three neighbors
+				expect(new_environment.cells[0][1].dead).to eq(true) # five neighbors
+				expect(new_environment.cells[0][2].living).to eq(true) # three neighbors
+				expect(new_environment.cells[1][0].living).to eq(true) # three neighbors
+				expect(new_environment.cells[1][1].dead).to eq(true) # five neighbors
+				expect(new_environment.cells[1][2].living).to eq(true) # three neighbors
+			end
+		end
+
+		context "Rule 4: when a dead cell has exactly three live neighbors" do
+			it "the cell becomes a live cell, as if by reproduction" do
+				# _R_
+				# LLL
+				new_environment.culture_cells
+				new_environment.culture_cell(0,1)
+				new_environment.culture_cell(1,0)
+				new_environment.culture_cell(1,1)
+				new_environment.culture_cell(1,2)
+				new_environment.cells[0][1].dies
+				new_environment.set_num_living_neighbors_for_all_cells
+				new_environment.tick
+				expect(new_environment.cells[0][1].living).to eq(true)
+				expect(new_environment.cells[1][0].dead).to eq(true)
+				expect(new_environment.cells[1][1].living).to eq(true)
+				expect(new_environment.cells[1][2].dead).to eq(true)
+			end
+		end
+	end
 end
 
