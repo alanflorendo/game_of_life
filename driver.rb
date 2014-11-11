@@ -62,11 +62,12 @@ puts "\e[H\e[2J" #clear_screen before driver code
 # e.tick_indefinitely(0.5)
 
 # GLIDER
-e = Environment.new(40,40,0)
+e = Environment.new(4,4,0)
 e.culture_cells
 e.culture_cell(0,1)
 e.culture_cell(1,2)
 e.culture_cell(2,0)
 e.culture_cell(2,1)
 e.culture_cell(2,2)
-e.tick_indefinitely(0.25)
+e.tick_indefinitely(0.1)
+
