@@ -33,5 +33,5 @@ From a professional perspective, my goal is that the code in this repository (i)
 ####RESOURCES
 
 [Melissa Gymrek (MIT), Conway's Game of Life](http://web.mit.edu/sp.268/www/2010/lifeSlides.pdf)<br>
-[Cornell Math Explorers Club](http://www.math.cornell.edu/~lipa/mec/lesson6.html)
+[Cornell Math Explorers Club](http://www.math.cornell.edu/~lipa/mec/lesson6.html)<br>
 [Wikipedia](http://en.wikipedia.org/wiki/Conway's_Game_of_Life)
