@@ -56,6 +56,8 @@ class Environment
 		# apply results of that array to existing environment
 		@height.times { |r| @width.times { |c| 
 			@cells[r][c].living = @life_at_t_plus_one[r][c] } }
+
+		expand_if_needed
 	end
 
 	def tick_indefinitely(pause_time)
@@ -65,6 +67,38 @@ class Environment
 			set_num_living_neighbors_for_all_cells
 			tick
 			tick_indefinitely(pause_time)
+	end
+
+	def expand_with_new_dead_row
+		# new_dead_row = []
+		@cells.push([])
+		@life_at_t_plus_one.push([])
+		@width.times { |col| @cells[@height].push(Cell.new(@height, col, false))}
+		@width.times { |col| @life_at_t_plus_one[@height].push(false) }
+		@height += 1	
+	end
+
+	def expand_with_new_dead_col
+		@height.times { |row| @cells[row].push(Cell.new(row, @width, false)) }
+		@height.times { |row| @life_at_t_plus_one[row].push(false) }
+		@width += 1	
+	end
+
+	def this_row_contains_life(row)
+		life_in_here = false
+		@cells[row].each { |cell| life_in_here = true if cell.living }
+		return life_in_here
+	end
+
+	def this_col_contains_life(col)
+		life_in_here = false
+		@height.times { |row| life_in_here = true if @cells[row][col].living }
+		return life_in_here
+	end
+
+	def expand_if_needed
+		expand_with_new_dead_row if this_row_contains_life(@height-1)
+		expand_with_new_dead_col if this_col_contains_life(@width-1)
 	end
 
 	def to_s

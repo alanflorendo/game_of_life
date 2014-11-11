@@ -211,5 +211,41 @@ describe 'Environment' do
 			end
 		end
 	end
+
+	context "expansion if needed" do
+		it "expands by a row when expanded by a row" do
+			new_environment.expand_with_new_dead_row
+			expect(new_environment.height).to eq(6)
+			expect(new_environment.cells.length).to eq(6)
+			expect(new_environment.life_at_t_plus_one.length).to eq(6)
+		end	
+
+		it "expands by a column when expanded by a column" do
+			new_environment.expand_with_new_dead_col
+			expect(new_environment.width).to eq(11)
+			new_environment.height.times { |row| 
+				expect(new_environment.cells[row].length).to eq(11) }
+			new_environment.height.times { |row| 
+				expect(new_environment.life_at_t_plus_one[row].length).to eq(11) }
+		end	
+
+		context "when a 2x2 grid with all living cells is cultured" do
+			# XX     XX_
+			# XX     XX_
+			#        ___
+			it "expands to a 3x3 grid" do
+				square_environment = Environment.new(2,2,1)
+				square_environment.culture_cells
+				square_environment.tick
+				expect(square_environment.height).to eq(3)
+				expect(square_environment.width).to eq(3)
+				expect(square_environment.cells.length).to eq(3)
+				square_environment.height.times { |row|
+					expect(square_environment.cells[row].length).to eq(3) }
+				square_environment.height.times { |row|
+					expect(square_environment.life_at_t_plus_one[row].length).to eq(3) }
+			end
+		end
+	end
 end
 

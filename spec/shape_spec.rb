@@ -167,5 +167,37 @@ describe Environment do
 	
 	end
 
+	context "when a glider is set up in a 4x4 environment" do
+		before(:each) do
+			@e = Environment.new(4,4,0)
+			@e.culture_cells
+			@e.culture_cell(0,1)
+			@e.culture_cell(1,2)
+			@e.culture_cell(2,0)
+			@e.culture_cell(2,1)
+			@e.culture_cell(2,2)
+		end
+
+		it "it expands to 5x4 after one tick" do
+			@e.tick
+			expect(@e.height).to eq(5)
+			expect(@e.width).to eq(4)
+		end
+
+		it "it expands to 5x5 after three ticks" do
+			@e.tick
+			@e.tick
+			@e.tick
+			expect(@e.height).to eq(5)
+			expect(@e.width).to eq(5)
+		end
+
+		it "it expands to 6x6 after seven ticks" do
+			7.times { @e.tick }
+			expect(@e.height).to eq(6)
+			expect(@e.width).to eq(6)
+		end
+
+	end
 
 end
