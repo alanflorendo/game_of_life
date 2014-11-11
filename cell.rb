@@ -1,10 +1,12 @@
 class Cell
 	attr_reader :living
+	attr_accessor :num_living_neighbors
 
 	def initialize(row, col, living)
 		@row = row
 		@col = col
 		@living = living
+		@num_living_neighbors = 0
 	end
 
 	def dead
