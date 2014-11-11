@@ -2,6 +2,7 @@ require_relative 'cell.rb'
 
 class Environment
 	attr_reader :height, :width, :cells
+	attr_accessor :life_at_t_plus_one
 
 	def initialize(height, width, habitability)
 		@height = height
@@ -9,6 +10,8 @@ class Environment
 		@habitability = habitability
 		@cells = []
 		@height.times { @cells.push(Array.new(width))}
+		@life_at_t_plus_one = []
+		@height.times { @life_at_t_plus_one.push(Array.new(width))}
 	end
 
 	def culture_cells
@@ -36,6 +39,32 @@ class Environment
 			end
 		end
 		return num_living
+	end
+
+	def set_num_living_neighbors_for_all_cells
+		@height.times { |r| @width.times { |c| 
+			@cells[r][c].num_living_neighbors = num_living_neighbors(r,c) } }
+	end
+
+	def tick
+		set_num_living_neighbors_for_all_cells
+
+		# store results of rules in separate array
+		@height.times { |r| @width.times { |c| 
+			@life_at_t_plus_one[r][c] = @cells[r][c].tick  } }
+
+		# apply results of that array to existing environment
+		@height.times { |r| @width.times { |c| 
+			@cells[r][c].living = @life_at_t_plus_one[r][c] } }
+	end
+
+	def tick_indefinitely(pause_time)
+			puts "\e[H\e[2J" # clear terminal window
+			puts self
+			sleep(pause_time)
+			set_num_living_neighbors_for_all_cells
+			tick
+			tick_indefinitely(pause_time)
 	end
 
 	def to_s
