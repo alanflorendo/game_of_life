@@ -199,11 +199,9 @@ describe 'Environment' do
 				# _R_
 				# LLL
 				new_environment.culture_cells
-				new_environment.culture_cell(0,1)
 				new_environment.culture_cell(1,0)
 				new_environment.culture_cell(1,1)
 				new_environment.culture_cell(1,2)
-				new_environment.cells[0][1].dies
 				new_environment.set_num_living_neighbors_for_all_cells
 				new_environment.tick
 				expect(new_environment.cells[0][1].living).to eq(true)
