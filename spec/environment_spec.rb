@@ -99,5 +99,25 @@ describe 'Environment' do
 		end
 	end
 
+	describe "neighbors" do
+
+		context "when only one cell has been created in an environment" do
+			let!(:environment_1x1) { Environment.new(1, 1, 1) }
+			before(:each) do 
+				environment_1x1.culture_cells 
+			end
+
+			it "responds to 'num_living_neighbors' method" do
+				expect(environment_1x1.cells[0][0]).to respond_to(:num_living_neighbors)
+			end
+
+			it "has zero neighbors" do
+				environment_1x1.set_num_living_neighbors_for_all_cells
+				cell = environment_1x1.cells[0][0]
+				expect(cell.num_living_neighbors).to eq(0) 
+			end
+		end
+	end
+
 end
 

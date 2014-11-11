@@ -38,6 +38,37 @@ class Environment
 		return num_living
 	end
 
+	def set_num_living_neighbors_for_all_cells
+		@height.times { |r| @width.times { |c| @cells[r][c].num_living_neighbors = num_living_neighbors(r,c) } }
+	end
+
+	def tick
+	# Implementation of the 4 GoL Rules
+		@height.times do |r|
+			@width.times do |c|
+				n = num_living_neighbors(r,c)
+				cell = @cells[r][c]
+				if cell.dead && cell.num_living_neighbors == 3
+					cell.regenerates
+				elsif cell.living && cell.num_living_neighbors < 2
+					cell.dies
+				elsif cell.living && cell.num_living_neighbors > 3
+					cell.dies
+				# else cell lives if 2 or 3 living neighbors
+				end
+			end
+		end
+	end
+
+	def tick_indefinitely(pause_time)
+			set_num_living_neighbors_for_all_cells
+			sleep(pause_time)
+			tick
+			puts "\e[H\e[2J" # clear terminal window
+			puts self
+			tick_indefinitely(pause_time)
+	end
+
 	def to_s
 		@height.times do |row|
 			@width.times do |col|
